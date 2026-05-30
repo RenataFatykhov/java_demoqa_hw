@@ -1,5 +1,5 @@
 import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.SelenideElement;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -10,8 +10,8 @@ import static com.codeborne.selenide.Selenide.*;
 public class StudentRegistrationFormTests extends TestBase {
 
     @Test
+    @DisplayName("Заполнение всех полей формы")
     public void successfulStudentRegistrationFormTest() {
-
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=userEmail]").setValue("ren.fatykhova@gmail.com");
@@ -78,7 +78,8 @@ public class StudentRegistrationFormTests extends TestBase {
     }
 
     @Test
-    public void successfulStudentRegistrationFormOnlyRequiredFiledsTest() {
+    @DisplayName("Заполнение только обязательных полей формы")
+    public void successfulOnlyRequiredFiledsStudentRegistrationFormTest() {
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=gender-radio-2]").click();
@@ -128,6 +129,7 @@ public class StudentRegistrationFormTests extends TestBase {
         $("[id=closeLargeModal]").shouldBe(Condition.clickable);
     }
     @Test
+    @DisplayName("Отправка пустой формы")
     public void emptyStudentRegistrationFormTest() {
         $("button[id=submit]").scrollTo().click();
 
@@ -140,7 +142,8 @@ public class StudentRegistrationFormTests extends TestBase {
                 "rgb(220, 53, 69)"));
     }
     @Test
-    public void invalidMobileNumberInStudentRegistrationFormTest() {
+    @DisplayName("Ввод недопустимого количества символов в поле 'Mobile'")
+    public void invalidMobileNumberStudentRegistrationFormTest() {
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=gender-radio-2]").click();
@@ -172,7 +175,8 @@ public class StudentRegistrationFormTests extends TestBase {
         $("[id=closeLargeModal]").shouldBe(Condition.clickable);
     }
     @Test
-    public void someGendersInStudentRegistrationFormTest() {
+    @DisplayName("В группе радиобатонов 'Gender' можно выбрать только один вариант")
+    public void onlyOneGenderCanBeSelectedAtATime() {
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=gender-radio-1]").click();
@@ -184,7 +188,8 @@ public class StudentRegistrationFormTests extends TestBase {
                 (cssValue("background-color", "rgba(13, 110, 253, 1)"));
     }
     @Test
-    public void noModalAfterStudentRegistrationFormTest() {
+    @DisplayName("Модальное окно исчезает после нажатия на кнопку закрытия")
+    public void modalWindowDisappearsAfterClosing() {
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=gender-radio-2]").click();
