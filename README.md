@@ -7,11 +7,11 @@
 
 - **Student Registration Form** — форма регистрации студентов
 
-![Форма Регистрации](screenshots/reg_form.png)
+<img src="screenshots/reg_form.png" alt="Форма Регистрации" width="70%">
 
 - **Text Box** — форма для ввода текстовых данных
 
-![Text Box](screenshots/text_box_form.png){width=70%}
+<img src="screenshots/text_box_form.png" alt="Text Box" width="70%">
 
 Проект демонстрирует подходы к тестированию веб-формы с использованием **Selenide** и **JUnit 5**, включая позитивные и негативные сценарии, валидацию полей и проверку модальных окон.
 
