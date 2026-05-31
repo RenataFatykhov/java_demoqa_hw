@@ -103,13 +103,15 @@ java_demoqa_hw/
 ├── src/
 │   └── test/
 │       └── java/
-│           ├── StudentRegistrationFormTests.java   # Основной тестовый класс
-│           └── TestBase.java                       # Базовый класс с настройками
+│           ├── StudentRegistrationFormTests.java    # Основной тестовый класс
+│           └── TestBase.java                        # Базовый класс с настройками
 ├── build/
 │   └── reports/
 │       └── tests/
 │           └── test/
 │               └── index.html                       # HTML отчет о тестах
+├── screenshots/
+│   └── form.png                                     # Тестируемая форма
 ├── build.gradle                                     # Конфигурация Gradle
 └── README.md                                        # Документация
 ```
