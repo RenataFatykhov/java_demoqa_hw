@@ -22,7 +22,6 @@ public class TestBase {
     }
 
     @AfterEach
-
     void teardown(){
         closeWebDriver();
     }
