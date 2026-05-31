@@ -18,7 +18,6 @@ public class TestBase {
     @BeforeEach
     void openPage(){
         Configuration.clickViaJs = true;
-        open("/automation-practice-form");
     }
 
     @AfterEach

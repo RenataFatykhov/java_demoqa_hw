@@ -12,6 +12,8 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("Заполнение всех полей формы")
     public void successfulStudentRegistrationFormTest() {
+        open("/automation-practice-form");
+
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=userEmail]").setValue("ren.fatykhova@gmail.com");
@@ -80,6 +82,8 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("Заполнение только обязательных полей формы")
     public void successfulOnlyRequiredFiledsStudentRegistrationFormTest() {
+        open("/automation-practice-form");
+
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=gender-radio-2]").click();
@@ -131,6 +135,8 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("Отправка пустой формы")
     public void emptyStudentRegistrationFormTest() {
+        open("/automation-practice-form");
+
         $("button[id=submit]").scrollTo().click();
 
         $(".modal-content").shouldBe(not(visible));
@@ -144,6 +150,8 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("Ввод недопустимого количества символов в поле 'Mobile'")
     public void invalidMobileNumberStudentRegistrationFormTest() {
+        open("/automation-practice-form");
+
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=gender-radio-2]").click();
@@ -177,6 +185,8 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("В группе радиобатонов 'Gender' можно выбрать только один вариант")
     public void onlyOneGenderCanBeSelectedAtATime() {
+        open("/automation-practice-form");
+
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=gender-radio-1]").click();
@@ -190,6 +200,8 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("Модальное окно исчезает после нажатия на кнопку закрытия")
     public void modalWindowDisappearsAfterClosing() {
+        open("/automation-practice-form");
+
         $("[id=firstName]").setValue("Renata");
         $("[id=lastName]").setValue("Fatykhova");
         $("[id=gender-radio-2]").click();
@@ -204,6 +216,7 @@ public class StudentRegistrationFormTests extends TestBase {
         $("button[id=submit]").scrollTo().click();
         $("[id=closeLargeModal]").click();
 
+        $("[id=closeLargeModal]").shouldBe(Condition.clickable);
         $(".modal-content").shouldBe(not(visible));
     }
     }
