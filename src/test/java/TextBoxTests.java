@@ -3,14 +3,18 @@ import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class TextBoxTests extends TestBase {
     @Test
     @DisplayName("Заполнение всех полей формы")
     public void successfulFullTextBoxTest() {
         open("/text-box");
+        executeJavaScript("""
+                document.getElementById('fixedban')?.remove();
+                document.querySelector('footer')?.remove();
+                document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
+                """);
 
         $("[id=userName]").setValue("Renata Fatykhova");
         $("[id=userEmail]").setValue("ren.fatykhova@gmail.com");
@@ -28,6 +32,11 @@ public class TextBoxTests extends TestBase {
     @DisplayName("Ввод невалидного email")
     public void invalidEmailTextBoxTest() {
         open("/text-box");
+        executeJavaScript("""
+                document.getElementById('fixedban')?.remove();
+                document.querySelector('footer')?.remove();
+                document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
+                """);
 
         $("[id=userName]").setValue("Renata Fatykhova");
         $("[id=userEmail]").setValue("invalid.email");

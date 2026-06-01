@@ -15,11 +15,6 @@ public class TestBase {
         Configuration.baseUrl = "https://demoqa.com";
     }
 
-    @BeforeEach
-    void openPage(){
-        Configuration.clickViaJs = true;
-    }
-
     @AfterEach
     void teardown(){
         closeWebDriver();
