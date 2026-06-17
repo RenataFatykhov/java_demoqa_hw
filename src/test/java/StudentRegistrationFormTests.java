@@ -249,7 +249,8 @@ public class StudentRegistrationFormTests extends TestBase {
 
 
     @CsvSource(value = {
-            "Renata, Fatykhova, Female, 1234567890, 4, November, 1997"
+            "Renata, Fatykhova, Female, 1234567890, 4, November, 1997",
+            "Renata, Fatykhova, Male, 1234567899, 5, November, 2007"
     })
     @ParameterizedTest(name = "Модальное окно исчезает после нажатия на кнопку закрытия")
     public void modalWindowDisappearsAfterClosing(
