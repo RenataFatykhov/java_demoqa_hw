@@ -2,7 +2,9 @@ import com.codeborne.selenide.Condition;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.*;
+
+import java.util.stream.Stream;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
@@ -10,9 +12,9 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class StudentRegistrationFormTests extends TestBase {
 
-    @CsvFileSource(resources = "/test_data/StudentRegistrationFormTests.csv", numLinesToSkip = 1)
+    @CsvFileSource(resources = "/test_data/successfulFillAllFiledsFormTest.csv", numLinesToSkip = 1)
     @ParameterizedTest(name = "Заполнение всех полей формы")
-    public void successfulStudentRegistrationFormTest(
+    public void successfulFillAllFiledsFormTest(
             String name,
             String surname,
             String email,
@@ -20,12 +22,13 @@ public class StudentRegistrationFormTests extends TestBase {
             String phoneNumber,
             int dayOfBirth,
             String monthOfBirth,
-            int yearOfBirth,
+            String yearOfBirth,
             String subjects,
             String hobbies,
             String address,
             String state,
-            String city
+            String city,
+            String successfulMessage
     ) {
 
         open("/automation-practice-form");
@@ -62,7 +65,7 @@ public class StudentRegistrationFormTests extends TestBase {
         executeJavaScript("arguments[0].click();", $("button[id=submit]"));
 
         $(".modal-content").shouldBe(visible);
-        $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
+        $("[id=example-modal-sizes-title-lg]").shouldHave(text(successfulMessage));
 
         $(".table-responsive").$(byText("Student Name")).parent()
                 .shouldHave(text(name + " " + surname));
@@ -83,9 +86,18 @@ public class StudentRegistrationFormTests extends TestBase {
 
     }
 
-    @Test
-    @DisplayName("Заполнение только обязательных полей формы")
-    public void successfulOnlyRequiredFiledsStudentRegistrationFormTest() {
+    @CsvFileSource(resources = "/test_data/onlyRequiredFields.csv", numLinesToSkip = 1)
+    @ParameterizedTest(name = "Заполнение только обязательных полей формы")
+    public void successfulFillOnlyRequiredFieldsFormTest(
+            String name,
+            String surname,
+            String gender,
+            String phoneNumber,
+            int dayOfBirth,
+            String monthOfBirth,
+            String yearOfBirth,
+            String successfulMessage
+    ) {
         open("/automation-practice-form");
         executeJavaScript("""
                 document.getElementById('fixedban')?.remove();
@@ -93,29 +105,29 @@ public class StudentRegistrationFormTests extends TestBase {
                 document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
                 """);
 
-        $("[id=firstName]").setValue("Renata");
-        $("[id=lastName]").setValue("Fatykhova");
-        $("[id=genterWrapper] [value=Female]").click();
-        $("[id=userNumber]").setValue("1234567890");
+        $("[id=firstName]").setValue(name);
+        $("[id=lastName]").setValue(surname);
+        $("[id=genterWrapper] [value=" + gender +"]").click();
+        $("[id=userNumber]").setValue(phoneNumber);
 
         $("[id=dateOfBirthInput]").click();
 
-        $(".react-datepicker__month-select").selectOption("November");
-        $(".react-datepicker__year-select").selectOption("1997");
-        $(".react-datepicker__day.react-datepicker__day--004").click();
+        $(".react-datepicker__month-select").selectOption(monthOfBirth);
+        $(".react-datepicker__year-select").selectOption(yearOfBirth);
+        $(".react-datepicker__day.react-datepicker__day--00" + dayOfBirth).click();
 
         executeJavaScript("arguments[0].click();", $("button[id=submit]"));
 
         $(".modal-content").shouldBe(visible);
-        $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
+        $("[id=example-modal-sizes-title-lg]").shouldHave(text(successfulMessage));
 
         $(".table-responsive").$(byText("Student Name")).parent().
-                shouldHave(text("Renata Fatykhova"));
+                shouldHave(text(name + " " + surname));
         $(".table-responsive").$(byText("Student Email")).sibling(0).shouldBe(empty);
-        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Female"));
-        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("1234567890"));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(gender));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(phoneNumber));
         $(".table-responsive").$(byText("Date of Birth")).
-                parent().shouldHave(text("4 November,1997"));
+                parent().shouldHave(text(dayOfBirth + " " + monthOfBirth + "," + yearOfBirth));
         $(".table-responsive").$(byText("Subjects")).sibling(0).shouldBe(empty);
         $(".table-responsive").$(byText("Hobbies")).sibling(0).shouldBe(empty);
         $(".table-responsive").$(byText("Picture")).sibling(0).shouldBe(empty);
@@ -124,9 +136,10 @@ public class StudentRegistrationFormTests extends TestBase {
 
         $("[id=closeLargeModal]").shouldBe(Condition.clickable);
     }
+
     @Test
     @DisplayName("Отправка пустой формы")
-    public void emptyStudentRegistrationFormTest() {
+    public void sendEmptyFormTest() {
         open("/automation-practice-form");
         executeJavaScript("""
                 document.getElementById('fixedban')?.remove();
@@ -144,9 +157,30 @@ public class StudentRegistrationFormTests extends TestBase {
         $("[id=userNumber]").shouldHave(cssValue("border-color",
                 "rgb(220, 53, 69)"));
     }
-    @Test
-    @DisplayName("Ввод недопустимого количества символов в поле 'Mobile'")
-    public void invalidMobileNumberStudentRegistrationFormTest() {
+
+
+    static Stream<Arguments> sendInvalidMobileNumberInFormTest(){
+        return Stream.of(
+                Arguments.of(
+                        "Renata", "Fatykhova", "Female", "12345678901", 4, "November", "1997",
+                        "Thanks for submitting the form", "1234567890"
+                )
+        );
+    }
+
+    @MethodSource
+    @ParameterizedTest(name = "Ввод недопустимого количества символов в поле Number")
+    public void sendInvalidMobileNumberInFormTest(
+            String name,
+            String surname,
+            String gender,
+            String phoneNumber,
+            int dayOfBirth,
+            String monthOfBirth,
+            String yearOfBirth,
+            String successfulMessage,
+            String validPhoneNumber
+    ) {
         open("/automation-practice-form");
         executeJavaScript("""
                 document.getElementById('fixedban')?.remove();
@@ -154,52 +188,49 @@ public class StudentRegistrationFormTests extends TestBase {
                 document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
                 """);
 
-        $("[id=firstName]").setValue("Renata");
-        $("[id=lastName]").setValue("Fatykhova");
-        $("[id=genterWrapper] [value=Female]").click();
-        $("[id=userNumber]").setValue("12345678901"); // more than 10 digits
+        $("[id=firstName]").setValue(name);
+        $("[id=lastName]").setValue(surname);
+        $("[id=genterWrapper] [value=" + gender + "]").click();
+        $("[id=userNumber]").setValue(phoneNumber); // more than 10 digits
 
         $("[id=dateOfBirthInput]").click();
 
-        $(".react-datepicker__month-select").selectOption("November");
-        $(".react-datepicker__year-select").selectOption("1997");
-        $(".react-datepicker__day.react-datepicker__day--004").click();
+        $(".react-datepicker__month-select").selectOption(monthOfBirth);
+        $(".react-datepicker__year-select").selectOption(yearOfBirth);
+        $(".react-datepicker__day.react-datepicker__day--00" + dayOfBirth).click();
 
         executeJavaScript("arguments[0].click();", $("button[id=submit]"));
 
         $(".modal-content").shouldBe(visible);
-        $("[id=example-modal-sizes-title-lg]").shouldHave(text("Thanks for submitting the form"));
+        $("[id=example-modal-sizes-title-lg]").shouldHave(text(successfulMessage));
 
         $(".table-responsive").$(byText("Student Name")).parent().
-                shouldHave(text("Renata Fatykhova"));
-        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text("Female"));
-        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text("1234567890"));
+                shouldHave(text(name + " " + surname));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(gender));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(validPhoneNumber));
         $(".table-responsive").$(byText("Date of Birth")).
-                parent().shouldHave(text("4 November,1997"));
+                parent().shouldHave(text(dayOfBirth + " " + monthOfBirth + "," + yearOfBirth));
 
         $("[id=closeLargeModal]").shouldBe(Condition.clickable);
     }
-    @Test
-    @DisplayName("В группе радиобатонов 'Gender' можно выбрать только один вариант")
-    public void onlyOneGenderCanBeSelectedAtATime() {
-        open("/automation-practice-form");
-        executeJavaScript("""
-                document.getElementById('fixedban')?.remove();
-                document.querySelector('footer')?.remove();
-                document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
-                """);
 
-        $("[id=firstName]").setValue("Renata");
-        $("[id=lastName]").setValue("Fatykhova");
-        $("[id=genterWrapper] [value=Male]").click();
-        $("[id=genterWrapper] [value=Female]").click();
 
-        $("[id=genterWrapper] [value=Male]").shouldBe(not(focused));
-        $("[id=genterWrapper] [value=Female]").shouldBe(focused);
+    static Stream<Arguments> onlyOneGenderCanBeSelectedAtATime(){
+        return Stream.of(
+                Arguments.of(
+                        "Renata", "Fatykhova", "Male", "Female"
+                )
+        );
     }
-    @Test
-    @DisplayName("Модальное окно исчезает после нажатия на кнопку закрытия")
-    public void modalWindowDisappearsAfterClosing() {
+
+    @MethodSource
+    @ParameterizedTest(name = "В группе радиобатонов 'Gender' можно выбрать только один вариант")
+    public void onlyOneGenderCanBeSelectedAtATime(
+            String name,
+            String surname,
+            String genderM,
+            String genderF
+    ) {
         open("/automation-practice-form");
         executeJavaScript("""
                 document.getElementById('fixedban')?.remove();
@@ -207,16 +238,46 @@ public class StudentRegistrationFormTests extends TestBase {
                 document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
                 """);
 
-        $("[id=firstName]").setValue("Renata");
-        $("[id=lastName]").setValue("Fatykhova");
-        $("[id=genterWrapper] [value=Female]").click();
-        $("[id=userNumber]").setValue("1234567890");
+        $("[id=firstName]").setValue(name);
+        $("[id=lastName]").setValue(surname);
+        $("[id=genterWrapper] [value=" + genderM + "]").click();
+        $("[id=genterWrapper] [value=" + genderF + "]").click();
+
+        $("[id=genterWrapper] [value=" + genderM + "]").shouldBe(not(focused));
+        $("[id=genterWrapper] [value=" + genderF + "]").shouldBe(focused);
+    }
+
+
+    @CsvSource(value = {
+            "Renata, Fatykhova, Female, 1234567890, 4, November, 1997"
+    })
+    @ParameterizedTest(name = "Модальное окно исчезает после нажатия на кнопку закрытия")
+    public void modalWindowDisappearsAfterClosing(
+            String name,
+            String surname,
+            String gender,
+            String phoneNumber,
+            int dayOfBirth,
+            String monthOfBirth,
+            String yearOfBirth
+    ) {
+        open("/automation-practice-form");
+        executeJavaScript("""
+                document.getElementById('fixedban')?.remove();
+                document.querySelector('footer')?.remove();
+                document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
+                """);
+
+        $("[id=firstName]").setValue(name);
+        $("[id=lastName]").setValue(surname);
+        $("[id=genterWrapper] [value=" + gender + "]").click();
+        $("[id=userNumber]").setValue(phoneNumber);
 
         $("[id=dateOfBirthInput]").click();
 
-        $(".react-datepicker__month-select").selectOption("November");
-        $(".react-datepicker__year-select").selectOption("1997");
-        $(".react-datepicker__day.react-datepicker__day--004").click();
+        $(".react-datepicker__month-select").selectOption(monthOfBirth);
+        $(".react-datepicker__year-select").selectOption(yearOfBirth);
+        $(".react-datepicker__day.react-datepicker__day--00" + dayOfBirth).click();
 
         executeJavaScript("arguments[0].click();", $("button[id=submit]"));
         $("[id=closeLargeModal]").click();
