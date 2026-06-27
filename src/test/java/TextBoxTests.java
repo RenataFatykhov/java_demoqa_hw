@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -6,6 +7,23 @@ import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
 
 public class TextBoxTests extends TestBase {
+
+    String userName;
+    String userEmail;
+    String currentAddress;
+    String permanentAddress;
+
+
+    @BeforeEach
+    public void setUp() {
+        userName = "Renata Fatykhova";
+        userEmail = "renata.fatykhova@gmail.com";
+        currentAddress = "Test Street one";
+        permanentAddress = "Test Street two";
+
+
+    }
+
     @Test
     @DisplayName("Заполнение всех полей формы")
     public void successfulFullTextBoxTest() {
@@ -16,14 +34,14 @@ public class TextBoxTests extends TestBase {
                 document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
                 """);
 
-        $("[id=userName]").setValue("Renata Fatykhova");
-        $("[id=userEmail]").setValue("ren.fatykhova@gmail.com");
+        $("[id=userName]").setValue(userName);
+        $("[id=userEmail]").setValue(userEmail);
         $("[id=currentAddress]").setValue("Test Street one");
         $("[id=permanentAddress]").setValue("Test Street two");
         $("[id=submit]").click();
 
-        $("[id=name]").shouldHave(text("Renata Fatykhova"));
-        $("[id=email]").shouldHave(text("ren.fatykhova@gmail.com"));
+        $("[id=name]").shouldHave(text(userName));
+        $("[id=email]").shouldHave(text(userEmail));
         $(".border [id=currentAddress]").shouldHave(text("Test Street one"));
         $(".border [id=permanentAddress]").shouldHave(text("Test Street two"));
     }
@@ -38,7 +56,7 @@ public class TextBoxTests extends TestBase {
                 document.querySelectorAll('[class*="ad"], [class*="banner"], iframe').forEach(el => el.remove());
                 """);
 
-        $("[id=userName]").setValue("Renata Fatykhova");
+        $("[id=userName]").setValue(userName);
         $("[id=userEmail]").setValue("invalid.email");
         $("[id=currentAddress]").setValue("Test Street one");
         $("[id=permanentAddress]").setValue("Test Street two");
