@@ -12,7 +12,7 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class StudentRegistrationFormTests extends TestBase {
 
-    @CsvFileSource(resources = "/test_data/successfulFillAllFiledsFormTest.csv", numLinesToSkip = 1)
+    @CsvFileSource(resources = "/test_data_reg_form/successfulFillAllFiledsFormTest.csv", numLinesToSkip = 1)
     @ParameterizedTest(name = "Заполнение всех полей формы")
     public void successfulFillAllFiledsFormTest(
             String name,
@@ -86,7 +86,7 @@ public class StudentRegistrationFormTests extends TestBase {
 
     }
 
-    @CsvFileSource(resources = "/test_data/onlyRequiredFields.csv", numLinesToSkip = 1)
+    @CsvFileSource(resources = "/test_data_reg_form/onlyRequiredFields.csv", numLinesToSkip = 1)
     @ParameterizedTest(name = "Заполнение только обязательных полей формы")
     public void successfulFillOnlyRequiredFieldsFormTest(
             String name,

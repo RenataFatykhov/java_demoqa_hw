@@ -5,24 +5,9 @@ import org.junit.jupiter.api.Test;
 import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.*;
+import static testdata.TestData.*;
 
 public class TextBoxTests extends TestBase {
-
-    String userName;
-    String userEmail;
-    String currentAddress;
-    String permanentAddress;
-
-
-    @BeforeEach
-    public void setUp() {
-        userName = "Renata Fatykhova";
-        userEmail = "renata.fatykhova@gmail.com";
-        currentAddress = "Test Street one";
-        permanentAddress = "Test Street two";
-
-
-    }
 
     @Test
     @DisplayName("Заполнение всех полей формы")
@@ -36,14 +21,14 @@ public class TextBoxTests extends TestBase {
 
         $("[id=userName]").setValue(userName);
         $("[id=userEmail]").setValue(userEmail);
-        $("[id=currentAddress]").setValue("Test Street one");
-        $("[id=permanentAddress]").setValue("Test Street two");
+        $("[id=currentAddress]").setValue(currentAddress);
+        $("[id=permanentAddress]").setValue(permanentAddress);
         $("[id=submit]").click();
 
         $("[id=name]").shouldHave(text(userName));
         $("[id=email]").shouldHave(text(userEmail));
-        $(".border [id=currentAddress]").shouldHave(text("Test Street one"));
-        $(".border [id=permanentAddress]").shouldHave(text("Test Street two"));
+        $(".border [id=currentAddress]").shouldHave(text(currentAddress));
+        $(".border [id=permanentAddress]").shouldHave(text(permanentAddress));
     }
 
     @Test
@@ -57,9 +42,9 @@ public class TextBoxTests extends TestBase {
                 """);
 
         $("[id=userName]").setValue(userName);
-        $("[id=userEmail]").setValue("invalid.email");
-        $("[id=currentAddress]").setValue("Test Street one");
-        $("[id=permanentAddress]").setValue("Test Street two");
+        $("[id=userEmail]").setValue(notValidEmail);
+        $("[id=currentAddress]").setValue(currentAddress);
+        $("[id=permanentAddress]").setValue(permanentAddress);
         $("[id=submit]").click();
 
         $("[id=userEmail]").shouldHave((cssValue("border", "1px solid rgb(255, 0, 0)")));
