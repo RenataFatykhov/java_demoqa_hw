@@ -10,26 +10,13 @@ import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
+import static testdata.TestData.*;
+
 public class StudentRegistrationFormTests extends TestBase {
 
-    @CsvFileSource(resources = "/test_data_reg_form/successfulFillAllFiledsFormTest.csv", numLinesToSkip = 1)
-    @ParameterizedTest(name = "Заполнение всех полей формы")
-    public void successfulFillAllFiledsFormTest(
-            String name,
-            String surname,
-            String email,
-            String gender,
-            String phoneNumber,
-            int dayOfBirth,
-            String monthOfBirth,
-            String yearOfBirth,
-            String subjects,
-            String hobbies,
-            String address,
-            String state,
-            String city,
-            String successfulMessage
-    ) {
+    @Test
+    @DisplayName("Заполнение всех полей формы")
+    public void successfulFillAllFiledsFormTest() {
 
         open("/automation-practice-form");
         executeJavaScript("""
@@ -41,7 +28,7 @@ public class StudentRegistrationFormTests extends TestBase {
         $("[id=firstName]").setValue(name);
         $("[id=lastName]").setValue(surname);
         $("[id=userEmail]").setValue(email);
-        $("[id=genterWrapper] [value=" + gender + "]").click();
+        $("[id=genterWrapper] [value=" + genderF + "]").click();
         $("[id=userNumber]").setValue(phoneNumber);
 
         $("[id=dateOfBirthInput]").click();
@@ -71,7 +58,7 @@ public class StudentRegistrationFormTests extends TestBase {
                 .shouldHave(text(name + " " + surname));
         $(".table-responsive").$(byText("Student Email"))
                 .parent().shouldHave(text(email));
-        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(gender));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(genderF));
         $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(phoneNumber));
         $(".table-responsive").$(byText("Date of Birth"))
                 .parent().shouldHave(text(dayOfBirth + " " + monthOfBirth + "," + yearOfBirth));
@@ -86,18 +73,9 @@ public class StudentRegistrationFormTests extends TestBase {
 
     }
 
-    @CsvFileSource(resources = "/test_data_reg_form/onlyRequiredFields.csv", numLinesToSkip = 1)
-    @ParameterizedTest(name = "Заполнение только обязательных полей формы")
-    public void successfulFillOnlyRequiredFieldsFormTest(
-            String name,
-            String surname,
-            String gender,
-            String phoneNumber,
-            int dayOfBirth,
-            String monthOfBirth,
-            String yearOfBirth,
-            String successfulMessage
-    ) {
+    @Test
+    @DisplayName("Заполнение только обязательных полей формы")
+    public void successfulFillOnlyRequiredFieldsFormTest() {
         open("/automation-practice-form");
         executeJavaScript("""
                 document.getElementById('fixedban')?.remove();
@@ -107,7 +85,7 @@ public class StudentRegistrationFormTests extends TestBase {
 
         $("[id=firstName]").setValue(name);
         $("[id=lastName]").setValue(surname);
-        $("[id=genterWrapper] [value=" + gender +"]").click();
+        $("[id=genterWrapper] [value=" + genderF +"]").click();
         $("[id=userNumber]").setValue(phoneNumber);
 
         $("[id=dateOfBirthInput]").click();
@@ -124,7 +102,7 @@ public class StudentRegistrationFormTests extends TestBase {
         $(".table-responsive").$(byText("Student Name")).parent().
                 shouldHave(text(name + " " + surname));
         $(".table-responsive").$(byText("Student Email")).sibling(0).shouldBe(empty);
-        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(gender));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(genderF));
         $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(phoneNumber));
         $(".table-responsive").$(byText("Date of Birth")).
                 parent().shouldHave(text(dayOfBirth + " " + monthOfBirth + "," + yearOfBirth));
@@ -158,29 +136,9 @@ public class StudentRegistrationFormTests extends TestBase {
                 "rgb(220, 53, 69)"));
     }
 
-
-    static Stream<Arguments> sendInvalidMobileNumberInFormTest(){
-        return Stream.of(
-                Arguments.of(
-                        "Renata", "Fatykhova", "Female", "12345678901", 4, "November", "1997",
-                        "Thanks for submitting the form", "1234567890"
-                )
-        );
-    }
-
-    @MethodSource
-    @ParameterizedTest(name = "Ввод недопустимого количества символов в поле Number")
-    public void sendInvalidMobileNumberInFormTest(
-            String name,
-            String surname,
-            String gender,
-            String phoneNumber,
-            int dayOfBirth,
-            String monthOfBirth,
-            String yearOfBirth,
-            String successfulMessage,
-            String validPhoneNumber
-    ) {
+    @Test
+    @DisplayName("Ввод недопустимого количества символов в поле Number")
+    public void sendInvalidMobileNumberInFormTest() {
         open("/automation-practice-form");
         executeJavaScript("""
                 document.getElementById('fixedban')?.remove();
@@ -190,8 +148,8 @@ public class StudentRegistrationFormTests extends TestBase {
 
         $("[id=firstName]").setValue(name);
         $("[id=lastName]").setValue(surname);
-        $("[id=genterWrapper] [value=" + gender + "]").click();
-        $("[id=userNumber]").setValue(phoneNumber); // more than 10 digits
+        $("[id=genterWrapper] [value=" + genderF + "]").click();
+        $("[id=userNumber]").setValue(invalidPhoneNumber); // more than 10 digits
 
         $("[id=dateOfBirthInput]").click();
 
@@ -206,31 +164,17 @@ public class StudentRegistrationFormTests extends TestBase {
 
         $(".table-responsive").$(byText("Student Name")).parent().
                 shouldHave(text(name + " " + surname));
-        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(gender));
-        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(validPhoneNumber));
+        $(".table-responsive").$(byText("Gender")).parent().shouldHave(text(genderF));
+        $(".table-responsive").$(byText("Mobile")).parent().shouldHave(text(phoneNumber));
         $(".table-responsive").$(byText("Date of Birth")).
                 parent().shouldHave(text(dayOfBirth + " " + monthOfBirth + "," + yearOfBirth));
 
         $("[id=closeLargeModal]").shouldBe(Condition.clickable);
     }
 
-
-    static Stream<Arguments> onlyOneGenderCanBeSelectedAtATime(){
-        return Stream.of(
-                Arguments.of(
-                        "Renata", "Fatykhova", "Male", "Female"
-                )
-        );
-    }
-
-    @MethodSource
-    @ParameterizedTest(name = "В группе радиобатонов 'Gender' можно выбрать только один вариант")
-    public void onlyOneGenderCanBeSelectedAtATime(
-            String name,
-            String surname,
-            String genderM,
-            String genderF
-    ) {
+    @Test
+    @DisplayName("В группе радиобатонов 'Gender' можно выбрать только один вариант")
+    public void onlyOneGenderCanBeSelectedAtATime() {
         open("/automation-practice-form");
         executeJavaScript("""
                 document.getElementById('fixedban')?.remove();
@@ -247,21 +191,9 @@ public class StudentRegistrationFormTests extends TestBase {
         $("[id=genterWrapper] [value=" + genderF + "]").shouldBe(focused);
     }
 
-
-    @CsvSource(value = {
-            "Renata, Fatykhova, Female, 1234567890, 4, November, 1997",
-            "Renata, Fatykhova, Male, 1234567899, 5, November, 2007"
-    })
-    @ParameterizedTest(name = "Модальное окно исчезает после нажатия на кнопку закрытия")
-    public void modalWindowDisappearsAfterClosing(
-            String name,
-            String surname,
-            String gender,
-            String phoneNumber,
-            int dayOfBirth,
-            String monthOfBirth,
-            String yearOfBirth
-    ) {
+    @Test
+    @DisplayName("Модальное окно исчезает после нажатия на кнопку закрытия")
+    public void modalWindowDisappearsAfterClosing() {
         open("/automation-practice-form");
         executeJavaScript("""
                 document.getElementById('fixedban')?.remove();
@@ -271,7 +203,7 @@ public class StudentRegistrationFormTests extends TestBase {
 
         $("[id=firstName]").setValue(name);
         $("[id=lastName]").setValue(surname);
-        $("[id=genterWrapper] [value=" + gender + "]").click();
+        $("[id=genterWrapper] [value=" + genderF + "]").click();
         $("[id=userNumber]").setValue(phoneNumber);
 
         $("[id=dateOfBirthInput]").click();
