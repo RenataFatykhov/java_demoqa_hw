@@ -6,7 +6,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 public class TestBase {
     @BeforeAll
-    static void setup(){
+    static void setUp() {
         Configuration.browser = "chrome";
 //        Configuration.browserVersion = "144.0";
         Configuration.browserSize = "1920x1080";
@@ -14,7 +14,7 @@ public class TestBase {
     }
 
     @AfterEach
-    void teardown(){
+    void tearDown() {
         closeWebDriver();
     }
 }

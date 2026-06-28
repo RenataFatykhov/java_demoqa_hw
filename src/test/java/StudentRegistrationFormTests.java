@@ -81,7 +81,7 @@ public class StudentRegistrationFormTests extends TestBase {
 
         $("[id=firstName]").setValue(name);
         $("[id=lastName]").setValue(surname);
-        $("[id=genterWrapper] [value=" + genderF +"]").click();
+        $("[id=genterWrapper] [value=" + genderF + "]").click();
         $("[id=userNumber]").setValue(phoneNumber);
 
         $("[id=dateOfBirthInput]").click();
@@ -124,8 +124,8 @@ public class StudentRegistrationFormTests extends TestBase {
         executeJavaScript("arguments[0].click();", $("button[id=submit]"));
 
         $(".modal-content").shouldBe(not(visible));
-        $("[id=firstName]").shouldHave(cssValue("border-color","rgb(220, 53, 69)"));
-        $("[id=lastName]").shouldHave(cssValue("border-color","rgb(220, 53, 69)"));
+        $("[id=firstName]").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
+        $("[id=lastName]").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
         $("[id=genterWrapper] [value=Female]").shouldHave(cssValue("border-color",
                 "rgb(220, 53, 69)"));
         $("[id=userNumber]").shouldHave(cssValue("border-color",
@@ -214,4 +214,4 @@ public class StudentRegistrationFormTests extends TestBase {
         $("[id=closeLargeModal]").shouldBe(Condition.clickable);
         $(".modal-content").shouldBe(not(visible));
     }
-    }
+}
