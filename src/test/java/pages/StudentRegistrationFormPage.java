@@ -153,59 +153,13 @@ public class StudentRegistrationFormPage {
     }
 
 
-    public StudentRegistrationFormPage checkResultTable(
-            String name,
-            String surname,
-            String email,
-            String gender,
-            String phoneNumber,
-            int day,
-            String month,
-            String year,
-            String subjects,
-            String hobbies,
-            String imgText,
-            String address,
-            String state,
-            String city
-    ) {
-        table.checkResult(
-                name,
-                surname,
-                email,
-                gender,
-                phoneNumber,
-                day,
-                month,
-                year,
-                subjects,
-                hobbies,
-                imgText,
-                address,
-                state,
-                city
-        );
+    public StudentRegistrationFormPage checkResultTable(String key, String value) {
+        table.checkRow(key, value);
         return this;
     }
 
-    public StudentRegistrationFormPage checkEmptyResultTable(
-            String name,
-            String surname,
-            String gender,
-            String phoneNumber,
-            int day,
-            String month,
-            String year
-    ) {
-        table.checkEmptyResult(
-                name,
-                surname,
-                gender,
-                phoneNumber,
-                day,
-                month,
-                year
-        );
+    public StudentRegistrationFormPage checkEmptyResultTable(String key) {
+        table.checkEmptyRow(key);
         return this;
     }
 

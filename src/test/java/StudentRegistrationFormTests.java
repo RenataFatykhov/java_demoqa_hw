@@ -28,21 +28,16 @@ public class StudentRegistrationFormTests extends TestBase {
                 .clickSubmitButton()
                 .checkVisibleModal()
                 .checkMessage(successfulMessage)
-                .checkResultTable(
-                        name,
-                        surname,
-                        email,
-                        genderF,
-                        phoneNumber,
-                        dayOfBirth,
-                        monthOfBirth,
-                        yearOfBirth,
-                        subjects,
-                        hobbies,
-                        imgText,
-                        address,
-                        state,
-                        city)
+                .checkResultTable("Student Name", name + " " + surname)
+                .checkResultTable("Student Email", email)
+                .checkResultTable("Gender", genderF)
+                .checkResultTable("Mobile", phoneNumber)
+                .checkResultTable("Date of Birth", dayOfBirth + " " + monthOfBirth + "," + yearOfBirth)
+                .checkResultTable("Subjects", subjects)
+                .checkResultTable("Hobbies", hobbies)
+                .checkResultTable("Picture", imgText)
+                .checkResultTable("Address", address)
+                .checkResultTable("State and City", state + " " + city)
                 .checkStateModalButton();
     }
 
@@ -61,15 +56,16 @@ public class StudentRegistrationFormTests extends TestBase {
                 .clickSubmitButton()
                 .checkVisibleModal()
                 .checkMessage(successfulMessage)
-                .checkEmptyResultTable(
-                        name,
-                        surname,
-                        genderF,
-                        phoneNumber,
-                        dayOfBirth,
-                        monthOfBirth,
-                        yearOfBirth
-                )
+                .checkResultTable("Student Name", name + " " + surname)
+                .checkEmptyResultTable("Student Email")
+                .checkResultTable("Gender", genderF)
+                .checkResultTable("Mobile", phoneNumber)
+                .checkResultTable("Date of Birth", dayOfBirth + " " + monthOfBirth + "," + yearOfBirth)
+                .checkEmptyResultTable("Subjects")
+                .checkEmptyResultTable("Hobbies")
+                .checkEmptyResultTable("Picture")
+                .checkEmptyResultTable("Address")
+                .checkEmptyResultTable("State and City")
                 .checkStateModalButton();
 
     }
@@ -83,8 +79,8 @@ public class StudentRegistrationFormTests extends TestBase {
                 .clickSubmitButton()
                 .checkNotVisibleModal()
                 .checkStateForm(
-                        border,
-                        borderColor,
+                        "border-color",
+                        "rgb(220, 53, 69)",
                         genderF
                 );
     }
@@ -97,22 +93,22 @@ public class StudentRegistrationFormTests extends TestBase {
                 .preparePage()
                 .typeName(name)
                 .typeSurname(surname)
-                .typeEmail(email)
                 .setGender(genderF)
                 .typeUserNumber(invalidPhoneNumber)
                 .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
                 .clickSubmitButton()
                 .checkVisibleModal()
                 .checkMessage(successfulMessage)
-                .checkEmptyResultTable(
-                        name,
-                        surname,
-                        genderF,
-                        phoneNumber,
-                        dayOfBirth,
-                        monthOfBirth,
-                        yearOfBirth
-                )
+                .checkResultTable("Student Name", name + " " + surname)
+                .checkEmptyResultTable("Student Email")
+                .checkResultTable("Gender", genderF)
+                .checkResultTable("Mobile", phoneNumber)
+                .checkResultTable("Date of Birth", dayOfBirth + " " + monthOfBirth + "," + yearOfBirth)
+                .checkEmptyResultTable("Subjects")
+                .checkEmptyResultTable("Hobbies")
+                .checkEmptyResultTable("Picture")
+                .checkEmptyResultTable("Address")
+                .checkEmptyResultTable("State and City")
                 .checkStateModalButton();
     }
 
@@ -138,7 +134,6 @@ public class StudentRegistrationFormTests extends TestBase {
                 .preparePage()
                 .typeName(name)
                 .typeSurname(surname)
-                .typeEmail(email)
                 .setGender(genderF)
                 .typeUserNumber(phoneNumber)
                 .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
