@@ -1,39 +1,67 @@
 package testdata;
+import com.github.javafaker.Faker;
+import java.util.Locale;
+import static utils.RandomUtils.*;
 
 public class TestData {
 
-    // Test data for TextBoxTests
+    static Faker faker = new Faker();
+    static Faker fakerRu = new Faker(new Locale("ru"));
+
     // Valid test data for TextBoxTests
-    public static String userName = "Renata Fatykhova";
-    public static String userEmail = "renata.fatykhova@gmail.com";
-    public static String currentAddress = "Test Street one";
-    public static String permanentAddress = "Test Street two";
+    public static String userName = fakerRu.name().fullName();
+    public static String userEmail = faker.internet().emailAddress();
+    public static String currentAddress = fakerRu.address().fullAddress();
+    public static String permanentAddress = fakerRu.address().fullAddress();
 
     // Invalid test data for TextBoxTests
-    public static String notValidEmail = "invalid.email";
+    public static String notValidEmail = fakerRu.name().fullName();
 
 
-    // Test data for StudentRegistrationFormTests
     // Valid test data for StudentRegistrationFormTests
-    public static String name = "Renata";
-    public static String surname = "Fatykhova";
-    public static String email = "renata.fatykhova@gmail.com";
+    public static String name = fakerRu.name().firstName();
+    public static String surname = fakerRu.name().lastName();
+    public static String email = faker.internet().emailAddress();
+    public static String gender = faker.options().option("Female", "Male", "Other");
     public static String genderF = "Female";
     public static String genderM = "Male";
-    public static String phoneNumber = "1234567890";
-    public static int dayOfBirth = 4;
-    public static String monthOfBirth = "November";
-    public static String yearOfBirth = "1997";
-    public static String subjects = "Maths";
-    public static String hobbies = "Reading";
+    public static String phoneNumber = generatePhoneNumber(10);
+    public static int dayOfBirth = faker.number().numberBetween(1, 29);
+    public static String monthOfBirth = faker.options().option(
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+    );
+    public static String yearOfBirth = String.valueOf(
+            faker.number().numberBetween(1950, 2010));
+    public static String subjects = faker.options().option(
+            "Maths",
+            "Arts",
+            "Accounting",
+            "Biology",
+            "Chemistry",
+            "Commerce",
+            "Civics",
+            "Computer Science",
+            "Economics",
+            "English",
+            "Hindi",
+            "History",
+            "Physics",
+            "Social Studies"
+    );
+    public static String hobbies = faker.options().option(
+            "Sports", "Reading", "Music"
+    );
     public static String imgText = "for_test.jpeg";
-    public static String address = "The best street 2";
-    public static String state = "NCR";
-    public static String city = "Delhi";
+    public static String address = fakerRu.address().fullAddress();
+    public static String state = faker.options().option(
+            "NCR", "Uttar Pradesh", "Haryana", "Rajasthan"
+    );
+    public static String city = generateCity(state);
     public static String successfulMessage = "Thanks for submitting the form";
 
     // Invalid test data for StudentRegistrationFormTests
-    public static String invalidPhoneNumber = "12345678901";
+    public static String invalidPhoneNumber = generatePhoneNumber(11);
 
 
 }

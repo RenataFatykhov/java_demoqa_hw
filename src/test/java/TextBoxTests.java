@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.TextBoxPage;
@@ -30,7 +29,7 @@ public class TextBoxTests extends TestBase {
         textBoxPage.openPage()
                 .preparePage()
                 .typeUserName(userName)
-                .typeUserEmail(userEmail)
+                .typeUserEmail(notValidEmail)
                 .typeCurrentAddress(currentAddress)
                 .typePermanentAddress(permanentAddress)
                 .clickSubmitButton()

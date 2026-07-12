@@ -2,7 +2,9 @@ package pages.components;
 
 import com.codeborne.selenide.SelenideElement;
 
+import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 
 public class CalendarComponent {
     private final SelenideElement monthSelect = $(".react-datepicker__month-select");
@@ -15,7 +17,8 @@ public class CalendarComponent {
     }
 
     private SelenideElement daySelect(int day) {
-        return $(".react-datepicker__day--00" + day);
+        return $$(".react-datepicker__day:not(.react-datepicker__day--outside-month)")
+                .findBy(exactText(String.valueOf(day)));
     }
 
 }
