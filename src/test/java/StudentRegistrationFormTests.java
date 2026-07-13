@@ -1,8 +1,7 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pages.StudentRegistrationFormPage;
-
-import static testdata.TestData.*;
+import testdata.TestData;
 
 public class StudentRegistrationFormTests extends TestBase {
     StudentRegistrationFormPage studentRegistrationFormPage = new StudentRegistrationFormPage();
@@ -10,55 +9,57 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("Заполнение всех полей формы")
     public void successfulFillAllFiledsFormTest() {
+        TestData data = new TestData();
         studentRegistrationFormPage
                 .openPage()
                 .preparePage()
-                .typeName(name)
-                .typeSurname(surname)
-                .typeEmail(email)
-                .setGender(gender)
-                .typeUserNumber(phoneNumber)
-                .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
-                .typeSubject(subjects)
-                .setHobbies(hobbies)
-                .uploadPicture(imgText)
-                .typeAddress(address)
-                .setStateAndCity(state, city)
+                .typeName(data.name)
+                .typeSurname(data.surname)
+                .typeEmail(data.email)
+                .setGender(data.gender)
+                .typeUserNumber(data.phoneNumber)
+                .setDateOfBirth(data.dayOfBirth, data.monthOfBirth, data.yearOfBirth)
+                .typeSubject(data.subjects)
+                .setHobbies(data.hobbies)
+                .uploadPicture(data.imgText)
+                .typeAddress(data.address)
+                .setStateAndCity(data.state, data.city)
                 .clickSubmitButton()
                 .checkVisibleModal()
-                .checkMessage(successfulMessage)
-                .checkResultTable("Student Name", name + " " + surname)
-                .checkResultTable("Student Email", email)
-                .checkResultTable("Gender", gender)
-                .checkResultTable("Mobile", phoneNumber)
-                .checkResultTable("Date of Birth", dayOfBirth + " " + monthOfBirth + "," + yearOfBirth)
-                .checkResultTable("Subjects", subjects)
-                .checkResultTable("Hobbies", hobbies)
-                .checkResultTable("Picture", imgText)
-                .checkResultTable("Address", address)
-                .checkResultTable("State and City", state + " " + city)
+                .checkMessage(data.successfulMessage)
+                .checkResultTable("Student Name", data.name + " " + data.surname)
+                .checkResultTable("Student Email", data.email)
+                .checkResultTable("Gender", data.gender)
+                .checkResultTable("Mobile", data.phoneNumber)
+                .checkResultTable("Date of Birth", data.dayOfBirth + " " + data.monthOfBirth + "," + data.yearOfBirth)
+                .checkResultTable("Subjects", data.subjects)
+                .checkResultTable("Hobbies", data.hobbies)
+                .checkResultTable("Picture", data.imgText)
+                .checkResultTable("Address", data.address)
+                .checkResultTable("State and City", data.state + " " + data.city)
                 .checkStateModalButton();
     }
 
     @Test
     @DisplayName("Заполнение только обязательных полей формы")
     public void successfulFillOnlyRequiredFieldsFormTest() {
+        TestData data = new TestData();
         studentRegistrationFormPage
                 .openPage()
                 .preparePage()
-                .typeName(name)
-                .typeSurname(surname)
-                .setGender(gender)
-                .typeUserNumber(phoneNumber)
-                .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
+                .typeName(data.name)
+                .typeSurname(data.surname)
+                .setGender(data.gender)
+                .typeUserNumber(data.phoneNumber)
+                .setDateOfBirth(data.dayOfBirth, data.monthOfBirth, data.yearOfBirth)
                 .clickSubmitButton()
                 .checkVisibleModal()
-                .checkMessage(successfulMessage)
-                .checkResultTable("Student Name", name + " " + surname)
+                .checkMessage(data.successfulMessage)
+                .checkResultTable("Student Name", data.name + " " + data.surname)
                 .checkEmptyResultTable("Student Email")
-                .checkResultTable("Gender", gender)
-                .checkResultTable("Mobile", phoneNumber)
-                .checkResultTable("Date of Birth", dayOfBirth + " " + monthOfBirth + "," + yearOfBirth)
+                .checkResultTable("Gender", data.gender)
+                .checkResultTable("Mobile", data.phoneNumber)
+                .checkResultTable("Date of Birth", data.dayOfBirth + " " + data.monthOfBirth + "," + data.yearOfBirth)
                 .checkEmptyResultTable("Subjects")
                 .checkEmptyResultTable("Hobbies")
                 .checkEmptyResultTable("Picture")
@@ -71,6 +72,7 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("Отправка пустой формы")
     public void sendEmptyFormTest() {
+        TestData data = new TestData();
         studentRegistrationFormPage
                 .openPage()
                 .preparePage()
@@ -79,21 +81,22 @@ public class StudentRegistrationFormTests extends TestBase {
                 .checkStateForm(
                         "border-color",
                         "rgb(220, 53, 69)",
-                        gender
+                        data.gender
                 );
     }
 
     @Test
     @DisplayName("Ввод недопустимого количества символов в поле Number")
     public void sendInvalidMobileNumberInFormTest() {
+        TestData data = new TestData();
         studentRegistrationFormPage
                 .openPage()
                 .preparePage()
-                .typeName(name)
-                .typeSurname(surname)
-                .setGender(gender)
-                .typeUserNumber(invalidPhoneNumber)
-                .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
+                .typeName(data.name)
+                .typeSurname(data.surname)
+                .setGender(data.gender)
+                .typeUserNumber(data.invalidPhoneNumber)
+                .setDateOfBirth(data.dayOfBirth, data.monthOfBirth, data.yearOfBirth)
                 .clickSubmitButton()
                 .checkNotVisibleModal();
     }
@@ -101,27 +104,29 @@ public class StudentRegistrationFormTests extends TestBase {
     @Test
     @DisplayName("В группе радиобатонов 'Gender' можно выбрать только один вариант")
     public void onlyOneGenderCanBeSelectedAtATime() {
+        TestData data = new TestData();
         studentRegistrationFormPage
                 .openPage()
                 .preparePage()
-                .typeName(name)
-                .typeSurname(surname)
-                .setGender(genderM)
-                .setGender(genderF)
-                .checkStateOfGenderRadio(genderM, genderF);
+                .typeName(data.name)
+                .typeSurname(data.surname)
+                .setGender(data.genderM)
+                .setGender(data.genderF)
+                .checkStateOfGenderRadio(data.genderM, data.genderF);
     }
 
     @Test
     @DisplayName("Модальное окно исчезает после нажатия на кнопку закрытия")
     public void modalWindowDisappearsAfterClosing() {
+        TestData data = new TestData();
         studentRegistrationFormPage
                 .openPage()
                 .preparePage()
-                .typeName(name)
-                .typeSurname(surname)
-                .setGender(gender)
-                .typeUserNumber(phoneNumber)
-                .setDateOfBirth(dayOfBirth, monthOfBirth, yearOfBirth)
+                .typeName(data.name)
+                .typeSurname(data.surname)
+                .setGender(data.gender)
+                .typeUserNumber(data.phoneNumber)
+                .setDateOfBirth(data.dayOfBirth, data.monthOfBirth, data.yearOfBirth)
                 .clickSubmitButton()
                 .checkVisibleModal()
                 .closeModal()
