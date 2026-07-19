@@ -9,7 +9,7 @@ public class TestBase {
     static void setUp() {
         Configuration.headless = true;
         Configuration.browser = "chrome";
-        Configuration.browserSize = "1920x1080";
+        // Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
     }
 
