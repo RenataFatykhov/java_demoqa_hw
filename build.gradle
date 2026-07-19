@@ -36,4 +36,11 @@ tasks.withType(JavaCompile) {
 
 test {
     useJUnitPlatform()
+    systemProperty 'selenide.headless', System.getProperty('selenide.headless', 'true')
+    systemProperty 'selenide.browser', System.getProperty('selenide.browser', 'chrome')
+
+    testLogging {
+        events "passed", "skipped", "failed"
+        showStandardStreams = true
+    }
 }
