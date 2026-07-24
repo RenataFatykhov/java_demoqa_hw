@@ -10,10 +10,10 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class TestBase {
     @BeforeAll
     static void setUp() {
-        Configuration.headless = true;
-        Configuration.browser = "chrome";
         Configuration.browserSize = "1920x1080";
         Configuration.baseUrl = "https://demoqa.com";
+        Configuration.remote = "https://user1:1234@selenoid.qa.guru/wd/hub";
+
     }
 
     @BeforeEach
