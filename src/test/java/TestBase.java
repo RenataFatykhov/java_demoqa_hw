@@ -14,9 +14,12 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 public class TestBase {
     @BeforeAll
     static void setUp() {
-        Configuration.browserSize = "1920x1080";
-        Configuration.baseUrl = "https://demoqa.com";
-        Configuration.remote = "https://user1:1234@selenoid.qa.guru/wd/hub";
+
+        Configuration.browserSize = System.getProperty("browserSize");
+        Configuration.baseUrl = System.getProperty("baseUrl");
+        Configuration.remote = System.getProperty("remote");
+
+        "https://user1:1234@selenoid.qa.guru/wd/hub"
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("selenoid:options", Map.<String, Object>of(
