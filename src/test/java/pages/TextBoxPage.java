@@ -15,10 +15,10 @@ public class TextBoxPage {
     private final SelenideElement userPermanentAddressInput = $("#permanentAddress");
     private final SelenideElement submitButton = $("#submit");
     private final SelenideElement border = $(".border");
-    private final String pathTextBox = System.getProperty("pathTextBox");
 
     @Step("Открыть страницу \"{pathTextBox}\"")
     public TextBoxPage openPage() {
+        String pathTextBox = System.getProperty("pathTextBox");
         open(pathTextBox);
         return this;
     }
