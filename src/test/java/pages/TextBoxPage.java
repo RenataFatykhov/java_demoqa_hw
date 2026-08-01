@@ -16,7 +16,7 @@ public class TextBoxPage {
     private final SelenideElement submitButton = $("#submit");
     private final SelenideElement border = $(".border");
 
-    @Step("Открыть страницу \"{pathTextBox}\"")
+    @Step("Открыть страницу")
     public TextBoxPage openPage() {
         String pathTextBox = System.getProperty("pathTextBox");
         open(pathTextBox);

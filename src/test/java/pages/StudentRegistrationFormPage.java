@@ -31,7 +31,7 @@ public class StudentRegistrationFormPage {
     private final SelenideElement correctMessage = $("#example-modal-sizes-title-lg");
     private final SelenideElement modalButton = $("#closeLargeModal");
 
-    @Step("Открыть страницу \"{pathStudentForm}\"")
+    @Step("Открыть страницу")
     public StudentRegistrationFormPage openPage() {
         String pathStudentForm = System.getProperty("pathStudentForm");
         open(pathStudentForm);
